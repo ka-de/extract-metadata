@@ -24,9 +24,9 @@ fn main() -> Result<()> {
                     .extension()
                     .and_then(|s| s.to_str()) == Some("safetensors")
             {
-                process_file(entry.path()).with_context(||
-                    format!("Processing {:#?}", entry.path())
-                )?;
+                if let Err(err) = process_file(entry.path()) {
+                    eprint!("Error processing {:#?}: {}", entry.path(), err);
+                }
             }
         }
     } else {
